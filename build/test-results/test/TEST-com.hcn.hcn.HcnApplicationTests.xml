@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.hcn.hcn.HcnApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-02T06:43:35" hostname="TP" time="0.754">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.hcn.hcn.HcnApplicationTests" time="0.754"/>
+  <system-out><![CDATA[15:43:31.182 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.hcn.hcn.HcnApplicationTests]: HcnApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:43:31.337 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.hcn.hcn.HcnApplication for test class com.hcn.hcn.HcnApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2024-05-02T15:43:31.893+09:00  INFO 21272 --- [hcn] [    Test worker] com.hcn.hcn.HcnApplicationTests          : Starting HcnApplicationTests using Java 17.0.9 with PID 21272 (started by k3553 in C:\Users\k3553\Documents\exexpo\hcn)
+2024-05-02T15:43:31.895+09:00  INFO 21272 --- [hcn] [    Test worker] com.hcn.hcn.HcnApplicationTests          : No active profile set, falling back to 1 default profile: "default"
+2024-05-02T15:43:32.770+09:00  INFO 21272 --- [hcn] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-02T15:43:32.800+09:00  INFO 21272 --- [hcn] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 0 JPA repository interfaces.
+2024-05-02T15:43:33.354+09:00  INFO 21272 --- [hcn] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-05-02T15:43:33.591+09:00  INFO 21272 --- [hcn] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:c67a7090-0e80-46f8-af65-3f830b46a2aa user=SA
+2024-05-02T15:43:33.594+09:00  INFO 21272 --- [hcn] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-05-02T15:43:33.654+09:00  INFO 21272 --- [hcn] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-02T15:43:33.727+09:00  INFO 21272 --- [hcn] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-02T15:43:33.785+09:00  INFO 21272 --- [hcn] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-05-02T15:43:34.141+09:00  INFO 21272 --- [hcn] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-02T15:43:34.674+09:00  INFO 21272 --- [hcn] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-02T15:43:34.681+09:00  INFO 21272 --- [hcn] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02T15:43:34.954+09:00  WARN 21272 --- [hcn] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-02T15:43:35.759+09:00  INFO 21272 --- [hcn] [    Test worker] com.hcn.hcn.HcnApplicationTests          : Started HcnApplicationTests in 4.188 seconds (process running for 5.765)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
