@@ -1,17 +1,52 @@
 package com.hcn.hcn.config;
 
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableScheduling
 public class WebConfig implements WebMvcConfigurer {
+
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    private boolean cacheEnabled = true;
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000") // React 앱의 주소
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")  // 모든 헤더 허용
+                        .allowCredentials(true);  // 자격 증명 허용
+            }
+        };
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // C:/uploads/에 파일을 저장한다고 가정하며
-        // 이 파일들은 http://<server>:<port>/images/<filename>을 통해 접근 가능
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:///C:/uploads/");
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:" + uploadPath)
+                .setCachePeriod(cacheEnabled ? 3600 * 24 : 0); // 캐시 설정
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void clearCache() {
+        cacheEnabled = false;
+    }
+
+    @Scheduled(cron = "0 1 0 * * ?")
+    public void enableCache() {
+        cacheEnabled = true;
     }
 }
