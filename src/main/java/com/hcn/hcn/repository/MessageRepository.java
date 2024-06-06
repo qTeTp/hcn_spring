@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findByHeaderId(Long headerId);
+    List<Message> findByHeaderId(Long headerId); //headerId로 메시지를 검색
 }

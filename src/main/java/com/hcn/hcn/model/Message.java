@@ -1,11 +1,10 @@
 package com.hcn.hcn.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+//message테이블 매핑 어노테이션이 없으면 클래스명으로 매핑
 @Entity
+@Table(name = "message")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +14,6 @@ public class Message {
     private String toId;
     private String content;
     private String time;
-
-    // Getters and Setters
 
     public Long getId() {
         return id;

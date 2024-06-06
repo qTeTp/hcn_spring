@@ -1,13 +1,13 @@
 package com.hcn.hcn.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "header")
 public class ChatHeader {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String from_id;
     private String to_id;
@@ -15,7 +15,6 @@ public class ChatHeader {
     private String last_id;
     private String time;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

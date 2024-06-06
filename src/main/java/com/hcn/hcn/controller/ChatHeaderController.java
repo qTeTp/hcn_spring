@@ -16,7 +16,6 @@ public class ChatHeaderController {
 
     @GetMapping
     public List<ChatHeader> getChats(@RequestParam("userId") String userId) {
-        System.out.println("채팅 리스트 불러오기 - userId: " + userId);
         return chatHeaderService.getChatHeadersByUserId(userId);
     }
 }
