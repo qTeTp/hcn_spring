@@ -20,4 +20,8 @@ public class ProposalService {
     public List<Proposal> getProposalsByUserId(String userId) {
         return proposalRepository.findByUserId(userId);
     }
+
+    public Proposal getProposalById(Long id) {
+        return proposalRepository.findById(id).orElse(null);
+    }
 }

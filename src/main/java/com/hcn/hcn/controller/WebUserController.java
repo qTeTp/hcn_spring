@@ -108,4 +108,20 @@ public class WebUserController {
         return ResponseEntity.ok(existingUserData);
     }
 
+    // 금액 충전
+    @PostMapping("/charge")
+    public ResponseEntity<WebUserData> chargePoints(@RequestBody Map<String, Object> chargeData) {
+        String userId = (String) chargeData.get("userId");
+        Integer amount = (Integer) chargeData.get("amount");
+
+        WebUserData userData = webUserDataRepository.findByUserId(userId);
+        if (userData == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        userData.setPoints(userData.getPoints() + amount);
+        webUserDataRepository.save(userData);
+
+        return ResponseEntity.ok(userData);
+    }
 }

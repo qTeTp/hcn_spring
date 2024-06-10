@@ -31,6 +31,8 @@ public class SendProposalController {
     @Value("${upload.path}")
     private String uploadPath;
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
     @PostMapping
     public ResponseEntity<SendProposal> createSendProposal(
             @RequestParam("fromId") String fromId,
@@ -45,8 +47,11 @@ public class SendProposalController {
 
         // 새로운 Header 생성
         ChatHeader header = new ChatHeader();
-        header.setFromId(fromId);
-        header.setToId(toId);
+        header.setFrom_id(fromId);
+        header.setTo_id(toId);
+        header.setAll_points(pay); // 초기 총금액
+        header.setLast_message(goodName); //리스트 마지막 메시지
+        header.setTime(LocalDateTime.now().format(formatter)); // 시간 설정
         ChatHeader savedHeader = headerService.saveChatHeader(header);
 
         String fileName = System.currentTimeMillis() + "_" + photoUrl.getOriginalFilename();
@@ -71,55 +76,40 @@ public class SendProposalController {
         sendProposal.setPayWay(payWay);
         sendProposal.setPay(pay);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         sendProposal.setTime(LocalDateTime.now().format(formatter));
 
         SendProposal savedSendProposal = sendProposalService.saveSendProposal(sendProposal);
+
+        // all_pay 값을 업데이트
+        headerService.updateAllPoints(savedHeader.getId(), pay);
+
         return ResponseEntity.ok(savedSendProposal);
     }
 
-    //제안서 수정
     @PutMapping("/{id}")
     public ResponseEntity<SendProposal> updateSendProposal(
             @PathVariable("id") Long id,
-            @RequestParam("fromId") String fromId,
-            @RequestParam("toId") String toId,
-            @RequestParam(value = "photoUrl", required = false) MultipartFile photoUrl,
-            @RequestParam("goodName") String goodName,
-            @RequestParam("goodDetail") String goodDetail,
-            @RequestParam("goodRequire") String goodRequire,
-            @RequestParam("term") String term,
-            @RequestParam("payWay") String payWay,
-            @RequestParam("pay") Float pay) {
+            @RequestBody SendProposal updatedProposal) {
 
         SendProposal sendProposal = sendProposalService.getSendProposalById(id);
         if (sendProposal == null) {
             return ResponseEntity.notFound().build();
         }
 
-        if (photoUrl != null) {
-            String fileName = System.currentTimeMillis() + "_" + photoUrl.getOriginalFilename();
-            Path filePath = Paths.get(uploadPath + fileName);
+        sendProposal.setGoodName(updatedProposal.getGoodName());
+        sendProposal.setGoodDetail(updatedProposal.getGoodDetail());
+        sendProposal.setGoodRequire(updatedProposal.getGoodRequire());
+        sendProposal.setTerm(updatedProposal.getTerm());
+        sendProposal.setPayWay(updatedProposal.getPayWay());
+        sendProposal.setPay(updatedProposal.getPay());
 
-            try {
-                Files.write(filePath, photoUrl.getBytes());
-                sendProposal.setPhotoUrl(filePath.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ResponseEntity.badRequest().build();
-            }
-        }
-
-        sendProposal.setFromId(fromId);
-        sendProposal.setToId(toId);
-        sendProposal.setGoodName(goodName);
-        sendProposal.setGoodDetail(goodDetail);
-        sendProposal.setGoodRequire(goodRequire);
-        sendProposal.setTerm(term);
-        sendProposal.setPayWay(payWay);
-        sendProposal.setPay(pay);
+        sendProposal.setTime(LocalDateTime.now().format(formatter));
 
         SendProposal updatedSendProposal = sendProposalService.saveSendProposal(sendProposal);
+
+        // all_pay 값을 업데이트
+        headerService.updateAllPoints(sendProposal.getHeaderId(), updatedProposal.getPay());
+
         return ResponseEntity.ok(updatedSendProposal);
     }
 

@@ -31,9 +31,8 @@ public class WebUserData {
     private String websiteUrl; // 회사 사이트 URL
     @Column(columnDefinition = "TEXT")
     private String companyDescription; // 회사 소개글
-    private int points; // 보유 포인트
+    private float points; // 보유 포인트
 
-    // Getters and Setters
 
     @Override
     public String toString() {

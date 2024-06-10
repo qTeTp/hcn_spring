@@ -12,7 +12,9 @@ public class Message {
     private Long headerId;
     private String fromId;
     private String toId;
+    private Boolean messageType; // 0: 메시지, 1: 사진
     private String content;
+    private String photoUrl;
     private String time;
 
     public Long getId() {
@@ -61,5 +63,21 @@ public class Message {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Boolean getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(Boolean messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

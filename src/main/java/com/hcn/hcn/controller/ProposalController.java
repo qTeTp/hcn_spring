@@ -62,6 +62,48 @@ public class ProposalController {
         return ResponseEntity.ok(savedProposal);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Proposal> updateProposal(
+            @PathVariable("id") Long id,
+            @RequestParam("userId") String userId,
+            @RequestParam(value = "photoUrl", required = false) MultipartFile photoUrl,
+            @RequestParam("goodName") String goodName,
+            @RequestParam("goodDetail") String goodDetail,
+            @RequestParam("goodRequire") String goodRequire,
+            @RequestParam("term") String term,
+            @RequestParam("payWay") String payWay,
+            @RequestParam("pay") Float pay) {
+
+        Proposal proposal = proposalService.getProposalById(id);
+        if (proposal == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (photoUrl != null) {
+            String fileName = System.currentTimeMillis() + "_" + photoUrl.getOriginalFilename();
+            Path filePath = Paths.get(uploadPath, fileName);
+
+            try {
+                Files.write(filePath, photoUrl.getBytes());
+                proposal.setPhotoUrl(fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        proposal.setUserId(userId);
+        proposal.setGoodName(goodName);
+        proposal.setGoodDetail(goodDetail);
+        proposal.setGoodRequire(goodRequire);
+        proposal.setTerm(term);
+        proposal.setPayWay(payWay);
+        proposal.setPay(pay);
+
+        Proposal updatedProposal = proposalService.saveProposal(proposal);
+        return ResponseEntity.ok(updatedProposal);
+    }
+
     @GetMapping("/byUserId/{userId}")
     public ResponseEntity<List<Proposal>> getProposalsByUserId(@PathVariable("userId") String userId) {
         List<Proposal> proposals = proposalService.getProposalsByUserId(userId);
