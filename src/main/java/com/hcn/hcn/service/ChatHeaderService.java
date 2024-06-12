@@ -81,4 +81,12 @@ public class ChatHeaderService {
             throw new RuntimeException("Header not found");
         }
     }
+
+    //사진을 보냈습니다
+    public void updateHeaderForPhotoMessage(Long headerId, String lastMessage, String time) {
+        ChatHeader chatHeader = chatHeaderRepository.findById(headerId).orElseThrow();
+        chatHeader.setLast_message(lastMessage);
+        chatHeader.setTime(time);
+        chatHeaderRepository.save(chatHeader);
+    }
 }

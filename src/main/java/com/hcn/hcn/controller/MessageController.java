@@ -2,11 +2,12 @@ package com.hcn.hcn.controller;
 
 import com.hcn.hcn.model.Message;
 import com.hcn.hcn.service.MessageService;
+import com.hcn.hcn.service.ChatHeaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +23,9 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private ChatHeaderService chatHeaderService;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -44,22 +48,30 @@ public class MessageController {
         message.setMessageType(messageType);
         message.setTime(LocalDateTime.now().format(formatter));
 
+        String lastMessage = "";
         if (Boolean.TRUE.equals(messageType) && photo != null) { // 사진 메시지인 경우
             String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
             Path filePath = Paths.get(uploadPath + fileName);
 
             try {
                 Files.write(filePath, photo.getBytes());
-                message.setPhotoUrl(filePath.toString());
+                message.setPhotoUrl(fileName); // 파일 이름만 저장
+                message.setContent("사진을 보냈습니다"); // content 필드에 "사진을 보냈습니다" 저장
+                lastMessage = "사진을 보냈습니다";
             } catch (IOException e) {
                 e.printStackTrace();
                 return ResponseEntity.status(500).body(null);
             }
         } else { // 일반 메시지인 경우
-            message.setContent(content);
+            message.setContent(content != null ? content : ""); // content가 null일 경우 빈 문자열로 설정
+            lastMessage = content != null ? content : "";
         }
 
         Message savedMessage = messageService.saveMessage(message);
+
+        // 헤더 업데이트
+        chatHeaderService.updateChatHeader(headerId, fromId, lastMessage, LocalDateTime.now().format(formatter));
+
         return ResponseEntity.ok(savedMessage);
     }
 
