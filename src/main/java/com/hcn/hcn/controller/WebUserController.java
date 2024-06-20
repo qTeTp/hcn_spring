@@ -41,6 +41,21 @@ public class WebUserController {
         else {return 1;} //중복 아님
     }
 
+    // 앱에서 회원가입
+    @PostMapping("/AppSignUp")
+    public ResponseEntity<String> appSignUp(@RequestBody Map<String, String> appUserData) {
+        WebUserData webUserData = new WebUserData();
+        webUserData.setName(appUserData.get("name"));
+        webUserData.setUserId(appUserData.get("userId"));
+        webUserData.setPassword(appUserData.get("password"));
+
+        webUserDataRepository.save(webUserData);
+        // 메모리 갱신
+//        Loader.addUserCredential(webUserData.getUserId(), webUserData.getPassword());
+        System.out.println("Received user data from app: " + webUserData);
+        return ResponseEntity.ok("User signed up successfully from app");
+    }
+
     //로그인
     @PostMapping("/login") //포스트 방식
     public Map<String, Object> login(@RequestBody Map<String, String> loginData) {

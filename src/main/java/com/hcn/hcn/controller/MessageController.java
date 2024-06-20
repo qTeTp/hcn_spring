@@ -32,6 +32,27 @@ public class MessageController {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
+    // 메시지 보내기 - JSON 형식
+    @PostMapping("/json")
+    public ResponseEntity<Message> saveMessageJson(@RequestBody Message message) {
+        message.setTime(LocalDateTime.now().format(formatter));
+
+        String lastMessage = "";
+        if (Boolean.TRUE.equals(message.getMessageType()) && message.getPhotoUrl() != null) { // 사진 메시지인 경우
+            lastMessage = "사진을 보냈습니다";
+        } else { // 일반 메시지인 경우
+            lastMessage = message.getContent() != null ? message.getContent() : "";
+        }
+
+        Message savedMessage = messageService.saveMessage(message);
+
+        // 헤더 업데이트
+        chatHeaderService.updateChatHeader(message.getHeaderId(), message.getFromId(), lastMessage, LocalDateTime.now().format(formatter));
+
+        return ResponseEntity.ok(savedMessage);
+    }
+
+    // 메시지 보내기 - 파일 업로드 형식
     @PostMapping
     public ResponseEntity<Message> saveMessage(
             @RequestParam("headerId") Long headerId,
@@ -80,3 +101,4 @@ public class MessageController {
         return messageService.getMessagesByHeaderId(headerId);
     }
 }
+

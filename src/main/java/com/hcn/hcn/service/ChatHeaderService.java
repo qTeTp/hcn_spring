@@ -71,7 +71,6 @@ public class ChatHeaderService {
         }
     }
 
-    // 보낸 포인트 확인
     public Float getSentPoints(Long headerId) {
         Optional<ChatHeader> optionalHeader = chatHeaderRepository.findById(headerId);
         if (optionalHeader.isPresent()) {
@@ -82,7 +81,6 @@ public class ChatHeaderService {
         }
     }
 
-    //사진을 보냈습니다
     public void updateHeaderForPhotoMessage(Long headerId, String lastMessage, String time) {
         ChatHeader chatHeader = chatHeaderRepository.findById(headerId).orElseThrow();
         chatHeader.setLast_message(lastMessage);

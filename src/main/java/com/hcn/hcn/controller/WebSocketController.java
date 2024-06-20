@@ -20,7 +20,6 @@ public class WebSocketController {
         System.out.println("새로 받은 WebSocket message: " + message);
         messageService.saveMessage(message);
 
-        // Broadcast the message to all subscribers
         return message;
     }
 }

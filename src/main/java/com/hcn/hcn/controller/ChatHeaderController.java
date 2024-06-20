@@ -18,6 +18,7 @@ public class ChatHeaderController {
 
     @GetMapping
     public List<ChatHeader> getChats(@RequestParam("userId") String userId) {
+        System.out.println("Fetching chat headers for user: " + userId);
         return chatHeaderService.getChatHeadersByUserId(userId);
     }
 

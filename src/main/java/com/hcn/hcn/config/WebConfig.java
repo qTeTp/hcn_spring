@@ -18,18 +18,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     private boolean cacheEnabled = true;
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // React 주소
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")  // 모든 헤더 허용
-                        .allowCredentials(true);  // 자격 증명 허용
-            }
-        };
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000", "http://10.20.66.184:8080", "http://10.20.66.184:19000", "http://10.20.66.184:8081")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")  // 모든 헤더 허용
+                .allowCredentials(true);  // 자격 증명 허용
     }
 
     @Override
